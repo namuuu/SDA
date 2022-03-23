@@ -1,5 +1,5 @@
 #include "permut.h"
-#include "pile.h"
+
 
 
 
@@ -20,4 +20,6 @@ int noeudTerminal(char noeud[], char chaine[]) {
     return (strlen(noeud) == strlen(chaine)); 
 }
 
-int rechercheTerminee(char)
+int rechercheTerminee(T_Pile * pile) {
+    return 1;
+}

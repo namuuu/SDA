@@ -1,6 +1,5 @@
 // SDA1 TP 9 PILE de TAD (PILE d'ELEMENT)
 
-#include "pile.h"
 #include "file.h"
 #include "permut.h"
 
@@ -36,19 +35,19 @@ int main() {
       testPile(&pile);
       break;
     case 2: //testez toutes vos fonctions par un jeu de test de votre choix
-	initFile(&mafile);
-	printf("ajouter un element");
-	valeur=9;
-	filePleine(&mafile);
-	ajouter(&mafile,&valeur);
-	valeur=5;
-	ajouter(&mafile,&valeur);
-	afficherFile(&mafile);
-	retirer(&mafile,&valeur);
-	printf("\n2:\n");
-	afficherFile(&mafile);
-	printf("\n3:\n");
-	premier(&mafile);
+		initFile(&file);
+		printf("ajouter un element");
+		T_Elt valeur=9;
+		filePleine(&file);
+		ajouter(&file,&valeur);
+		valeur=5;
+		ajouter(&file,&valeur);
+		afficherFile(&file);
+		retirer(&file,&valeur);
+		printf("\n2:\n");
+		afficherFile(&file);
+		printf("\n3:\n");
+		premier(&file);
       break;
     case 3:
       scanf("%s",chaine); //une chaine de longueur <=MAX

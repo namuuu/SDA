@@ -26,8 +26,8 @@ void affecterElt(T_Elt *d,T_Elt *s)
 
 
 // lorsque T_ELt est un char  (peut être un jour)
-/*
-void saisirElt(T_Elt *e)
+
+/*void saisirElt(T_Elt *e)
 {
 scanf("%c",e);
 }
@@ -39,8 +39,8 @@ printf("\n%c",*e);
 void affecterElt(T_Elt *d,T_Elt *s)
 {
 *d=*s;
-}
-*/
+}*/
+
 
 
 

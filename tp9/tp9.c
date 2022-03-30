@@ -5,6 +5,7 @@
 
 void testPile(T_Pile *pile);
 void permut(T_Pile *pile, char *chaine);
+void echiquier(T_Pile *pile, int taille);
 
 int menu() {
 
@@ -24,7 +25,7 @@ int main() {
   T_File file;
   T_Pile pile;
   int chx;
-  // int taille;
+  int taille;
   char chaine[20];
 
   do {
@@ -50,12 +51,13 @@ int main() {
 		premier(&file);
       break;
     case 3:
+	  printf("Veuillez saisir la chaine à permuter : ");
       scanf("%s",chaine); //une chaine de longueur <=MAX
       permut(&pile,chaine); //TP9 partie 2: ecrire permut
       break;
     case 4:
-      //scanf("%d",&taille);//taille echiquier <=MAX
-      //echiquier(&mapile,taille); //TP9 partie 3: ecrire echiquier
+      scanf("%d",&taille);//taille echiquier <=MAX
+      echiquier(&pile,taille); //TP9 partie 3: ecrire echiquier
       break;
 
     }
@@ -121,7 +123,7 @@ void testPile(T_Pile *pile) {
 			afficherElt(&elt);
 			break;
 		case 6:
-			if(pilevide) {
+			if(pilevide(pile)) {
 				printf("La pile est vide !");
 				break;
 			}
@@ -148,24 +150,71 @@ void testPile(T_Pile *pile) {
 
 void permut(T_Pile *pile, char *chaine) {
 	int taille = strlen(chaine);
+	int nbPermu = 0;
 
-	while (noeudValide(pile))
-	{
-		if(1) {
-			// C'est un noeud terminal, la solution est donc correcte ! L'imprimer
-			printf("Solution : "); afficherPile(pile);
+	printf("\t");
 
-			// Passer à la zone suivante à vérifier
-			while (1)
-			{
-				
+	initPile(pile);
+
+	do {
+		while (noeudValide(pile))
+		{
+			if(noeudTerminal(pile, taille)) {
+				// C'est un noeud terminal, la solution est donc correcte ! L'imprimer
+				afficherSolution(pile, chaine);
+				nbPermu++;
+				goto noeudDeux;
+			} else {
+				passerAuPremierFils(pile, 1);
 			}
-			
-		} else {
-
 		}
-	}
-	
 
-	*pile; *chaine;
+		noeudDeux:
+		// Passer à la zone suivante à vérifier
+		while (!rechercheTerminee(pile) && naPlusDeFrere(pile, taille)) 
+		{
+			remonterAuPere(pile);
+		}
+		if (!rechercheTerminee(pile))
+		{
+			passerAuFrereSuivant(pile, &(pile->Elts[pile->nbElts]));
+		}
+			
+		
+	} while(!rechercheTerminee(pile));
+
+	printf("\nIl y a %d permutations.\n", nbPermu);
+	
 }	
+
+void echiquier(T_Pile *pile, int taille) {
+	initPile(pile);
+
+	do {
+		while (noeudValide(pile))
+		{
+			if(noeudTerminal(pile, taille)) {
+				// C'est un noeud terminal, c'est une position possible, hormis les diagonales.
+				verifierReine(pile);
+				goto noeudDeux;
+			} else {
+				passerAuPremierFils(pile, 1);
+			}
+		}
+
+		noeudDeux:
+		// Passer à la zone suivante à vérifier
+		while (!rechercheTerminee(pile) && naPlusDeFrere(pile, taille)) 
+		{
+			remonterAuPere(pile);
+		}
+		if (!rechercheTerminee(pile))
+		{
+			passerAuFrereSuivant(pile, &(pile->Elts[pile->nbElts]));
+		}
+			
+		
+	} while(!rechercheTerminee(pile));
+	
+}	
+

@@ -1,6 +1,6 @@
 #include "es.h" 	 
 
-#define MAX 10 
+#define MAX 5
 
 
 typedef struct  

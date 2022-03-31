@@ -1,5 +1,6 @@
 *.o
 *.exe
+*.zip
 alertes.txt
 facture*.txt
 commande*.txt

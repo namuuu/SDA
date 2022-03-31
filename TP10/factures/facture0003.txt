@@ -2,3 +2,5 @@ Client: DUPONT
 45 boite_punaises (P.U. = 1.20eur) :: 157.50eur
 15 boite_trombones (P.U. = 1.20eur) :: 61.50eur
 80 boite_100enveloppes11*13 (P.U. = 1.20eur) :: 704.00eur
+
+Total: 923.00eur

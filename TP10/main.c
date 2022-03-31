@@ -102,6 +102,7 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
 
     //printf("\n\nClient: %s", commande.client);
     fprintf(fileFacture, "Client: %s", commande.client);
+    float total = 0;
 
     while(fgets(line, 50, fileCommande) != NULL) {
         char * strToken = strtok(line, " \n");
@@ -115,6 +116,7 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
 
                 if(enleverStock(tabProd[i].reference, commande.nbProduit[commande.tailleProduit])) {
                     fprintf(fileFacture, "%d %s (P.U. = %.2feur) :: %.2feur\n", commande.nbProduit[commande.tailleProduit], tabProd[i].libelle, tabProd->prixUnitaire, (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit]);
+                    total += (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit];
                 } else {
                     alert(tabProd[i].reference);
                 }
@@ -123,6 +125,8 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
 
         commande.tailleProduit++;
     }
+
+    fprintf(fileFacture, "\nTotal: %.2feur", total);
 
 	fclose(fileCommande);
     fclose(fileFacture);

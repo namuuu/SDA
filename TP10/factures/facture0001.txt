@@ -4,3 +4,5 @@ Client: DUPONT
 35 ramette_feuillesA4 (P.U. = 1.20eur) :: 346.50eur
 60 boite_100enveloppes11*21 (P.U. = 1.20eur) :: 522.00eur
 20 boite_100enveloppes30*21 (P.U. = 1.20eur) :: 294.00eur
+
+Total: 1314.50eur

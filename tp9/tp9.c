@@ -4,6 +4,7 @@
 #include "permut.h"
 
 void testPile(T_Pile *pile);
+void testfile(T_File * file);
 void permut(T_Pile *pile, char *chaine);
 void echiquier(T_Pile *pile, int taille);
 
@@ -11,8 +12,8 @@ int menu() {
 
   int choix;
   printf("\n\n\n SDA1 TP9");
-  printf("\n\n\n 1 : Tester mon fichier file.c");
-  printf("\n 2 : Tester mon fichier pile.c");
+  printf("\n\n\n 1 : Tester mon fichier pile.c");
+  printf("\n 2 : Tester mon fichier file.c");
   printf("\n 3 : Afficher et compter les permutations d'une chaine");
   printf("\n 4 : Afficher et compter les solutions pour un échiquier ");
   printf("\n\t\t 0 :  QUITTER  \n");
@@ -36,19 +37,7 @@ int main() {
       testPile(&pile);
       break;
     case 2: //testez toutes vos fonctions par un jeu de test de votre choix
-		initFile(&file);
-		printf("ajouter un element");
-		T_Elt valeur=9;
-		filePleine(&file);
-		ajouter(&file,&valeur);
-		valeur=5;
-		ajouter(&file,&valeur);
-		afficherFile(&file);
-		retirer(&file,&valeur);
-		printf("\n2:\n");
-		afficherFile(&file);
-		printf("\n3:\n");
-		premier(&file);
+	  testfile(&file);
       break;
     case 3:
 	  printf("Veuillez saisir la chaine à permuter : ");
@@ -146,6 +135,77 @@ void testPile(T_Pile *pile) {
 		}
 	}
 
+}
+
+void testfile(T_File * file) {
+    int choix;
+    T_Elt elt;
+    initFile(file);
+    while (choix != 0) {
+        printf("\n\n\n Test File\n");
+        printf("\n 1 : initFile");
+        printf("\n 2 : FilePleine");
+        printf("\n 3 : FileVide");
+        printf("\n 4 : emfiler");
+        printf("\n 5 : defiler");
+        printf("\n 6 : premier");
+        printf("\n 7 : afficherfile");
+        printf("\n\t\t 0 :  QUITTER  \n");
+        printf("\n Quel est votre choix ? ");
+        scanf("%d", & choix);
+
+        switch (choix) {
+        case 1:
+            initFile(file);
+            break;
+        case 2:
+            if (filePleine(file)) {
+                printf("\nINFO > La file est effectivement pleine !\n");
+            } else {
+                printf("\nINFO > La file n'est pas pleine.");
+            }
+            getchar();
+            break;
+        case 3:
+            if (fileVide(file)) {
+                printf("\nINFO > La file est effectivement vide !\n");
+            } else {
+                printf("\nINFO > La file n'est pas vide.");
+            }
+            getchar();
+            break;
+        case 4:
+            printf("Quel élément souhaitez-vous ajouter (int) : ");
+            saisirElt( & elt);
+
+            if (ajouter(file, & elt) == 1) {
+                printf("Élément enfilé ! Celui-ci était : ");
+                afficherElt( & elt);
+            } else {
+                printf("Élément non enfilé !  ");
+            }
+
+            break;
+        case 5:
+            retirer(file, & elt);
+            printf("Élément defilé  ");
+
+            break;
+        case 6:
+            if (!premier(file)) {
+                printf("La file est vide !");
+                break;
+            }
+
+            break;
+        case 7:
+            afficherFile(file);
+            break;
+        case 0:
+        default:
+            break;
+        }
+    }
 }
 
 void permut(T_Pile *pile, char *chaine) {

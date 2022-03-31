@@ -30,9 +30,24 @@ int convertStringIntoInt(char * c) {
     int n = 0; // Converted int.
 
     for(int i = 1; i <= taille; i++) {
-        printf("n: %c  i: %d  pow:%lf  added:%lf\n", c[taille-i], i-1, pow(10, i-1),  c[taille-i] * pow(10, i-1));
-        n += c[taille-i] * pow(10, i-1);
+        n += (c[taille-i]-'0') * (int)(pow(10, i-1));
     }
 
     return n;
+}
+
+double convertPriceStringToInt(char * c) {
+    int taille = strlen(c)-1;
+    double price = 0;
+
+    price += (c[taille]-'0') * pow(10,-2);
+    taille--;
+    price += (c[taille]-'0') * pow(10,-1);
+    taille --;
+
+    for(int i = 1; i <= taille; i++) {
+        price += (c[taille-i]-'0') * (int)(pow(10, i-1));
+    }
+
+    return price;
 }

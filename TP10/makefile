@@ -4,7 +4,7 @@ op= -Wall -Wextra
 all: tp10.exe
 
 tp10.exe: prod.h util.o main.c
-	$(c) $(op) prod.h util.o main.c -o tp10.exe
+	$(c) $(op) prod.h util.o main.c -o tp10.exe -lm
 
 util.o: util.c util.h
 	$(c) $(op) -c util.c

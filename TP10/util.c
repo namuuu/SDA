@@ -31,7 +31,7 @@ int convertStringIntoInt(char * c) {
     int n = 0; // Converted int.
 
     for(int i = 1; i <= taille; i++) {
-        n += (c[taille-i]-'0') * (int)(pow(10, i-1));
+        n +=convertCharToInt(c[taille-i]) * (int)(pow(10, i-1));
     }
 
     return n;
@@ -43,14 +43,24 @@ double convertPriceStringIntoDouble(char * c) {
     double price = 0;
 
     // Gère les chiffres après la virgule
-    price += (c[taille]-'0') * pow(10,-2);
+    price += convertCharToInt(c[taille]) * pow(10,-2);
     taille--;
-    price += (c[taille]-'0') * pow(10,-1);
+    price += convertCharToInt(c[taille]) * pow(10,-1);
     taille --;
 
     for(int i = 1; i <= taille; i++) {
-        price += (c[taille-i]-'0') * (int)(pow(10, i-1));
+        price += convertCharToInt(c[taille-i]) * (int)(pow(10, i-1));
     }
 
     return price;
+}
+
+// Convertit un seul caractère en int. Si le caractère n'était pas un int, alors renvoie 0.
+int convertCharToInt(char c) {
+    int n = c-'0';
+
+    if(n<0 || n>9) {
+        return 0;
+    }
+    return n;
 }

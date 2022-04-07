@@ -1,8 +1,8 @@
 Client: DUPONT
-10 crayon (P.U. = 1.20eur) :: 12.00eur
+100 crayon (P.U. = 1.20eur) :: 120.00eur
 25 agrafeuse (P.U. = 5.60eur) :: 140.00eur
 35 ramette_feuillesA4 (P.U. = 9.90eur) :: 346.50eur
 60 boite_100enveloppes11*21 (P.U. = 8.70eur) :: 522.00eur
 15 boite_100enveloppes30*21 (P.U. = 14.70eur) :: 220.50eur
 
-Total: 1241.00eur
+Total: 1349.00eur

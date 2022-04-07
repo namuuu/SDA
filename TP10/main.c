@@ -72,7 +72,7 @@ int lireProchaineCommande() { //pour lire l'int contenu dans nextFact
     fread( &Nb, sizeof(int), 1, file);
     fclose(file);
     //printf("\n--->lu N=%d",N);
-    return 1;
+    return Nb;
 }
 
 T_Commande lireCommande(char * nomCommande, char * nbCommande) {

@@ -80,7 +80,7 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
     T_Commande commande;
 	fileCommande = fopen(nomCommande, "r");
 
-    char factureName[CHAR_MAX] = "./factures/facture";
+    char factureName[CHARA_MAX] = "./factures/facture";
     strcat(factureName, nbCommande);
     strcat(factureName, ".txt");
 
@@ -110,8 +110,8 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
 
         for(int i = 0; i < tabsize; i++) {
             if(tabProd[i].reference == commande.idProduit[commande.tailleProduit]) {
-                //printf("%d %s (P.U. = %.2feur) :: %.2feur\n", commande.nbProduit[commande.tailleProduit], tabProd[i].libelle, tabProd->prixUnitaire, (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit]);
 
+                // Enlève le stock et imprime dans la facture ou crée une alerte selon si la procédure a fonctionné ou non
                 if(enleverStock(tabProd[i].reference, commande.nbProduit[commande.tailleProduit])) {
                     fprintf(fileFacture, "%d %s (P.U. = %.2feur) :: %.2feur\n", commande.nbProduit[commande.tailleProduit], tabProd[i].libelle, (tabProd[i].prixUnitaire), (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit]);
                     total += (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit];
@@ -140,10 +140,13 @@ void lireProduits(T_TableauDeProduits tabProd, int *tabSize) {
 
 	while (fgets(line, PROD_SIZE, fileProducts) != NULL) {
 		T_Produit produit;
+        // Lit la référence
 		char * strToken = strtok(line, " \n");
 		produit.reference = convertStringIntoInt(strToken);
+        // Lit le libellé
 		strToken = strtok(NULL, " \n");
 		strcpy(produit.libelle, strToken);
+        // Lit le prix
 		strToken = strtok(NULL, " \n");
 		produit.prixUnitaire = convertPriceStringIntoDouble(strToken);
 
@@ -153,25 +156,29 @@ void lireProduits(T_TableauDeProduits tabProd, int *tabSize) {
 }
 
 // Permet d'enlever le stock d'un produit id de quantité nb.
+// Renvoie 0 s'il y a un problème de stock, 1 si tout s'est passé correctement.
 int enleverStock(int id, int nb) {
     FILE * fileStockRead;
     FILE * fileStockWrite;
 
     int flag = 0;
 
-    char line[CHAR_MAX];
+    char line[CHARA_MAX];
 
+    // Écrit dans un fichier temporaire le nouveau stock alors que l'on lit le stock actuel
     fileStockRead = fopen("stock.txt", "r");
     fileStockWrite = fopen("stock.tmp", "w");
 
-    while((fgets(line, CHAR_MAX, fileStockRead)) != NULL) {
+    while((fgets(line, CHARA_MAX, fileStockRead)) != NULL) {
         char * strToken = strtok(line, " \n");
         int idRead = convertStringIntoInt(strToken);
 
         strToken = strtok(NULL, " \n");
         int oldStock = convertStringIntoInt(strToken);
 
+        // Vérifie si l'ID du produit modifié et lu est identique
         if(idRead == id) {
+            // Vérifie s'il y a assez de stock
             if(oldStock - nb >= 0) {
                 fprintf(fileStockWrite, "%d %d\n", idRead, oldStock - nb);
                 flag = 1;
@@ -186,6 +193,7 @@ int enleverStock(int id, int nb) {
     fclose(fileStockRead);
     fclose(fileStockWrite);
 
+    // Suppression du fichier de l'ancien stock pour le remplacer par le nouveau
     remove("stock.txt");
     rename("stock.tmp", "stock.txt");
 

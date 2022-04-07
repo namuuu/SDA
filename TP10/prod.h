@@ -39,6 +39,7 @@ void lireProduits(T_TableauDeProduits tabProd, int *tabSize);
 int enleverStock(int id, int nb);
 // Crée un fichier alertes.txt dans lequel sera indiqué la référénce des objets manquants
 void alert(int id);
+void createNewCommand(char * nbCommande);
 
 
 

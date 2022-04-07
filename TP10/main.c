@@ -8,6 +8,8 @@
 #include "prod.h"
 #include "util.h"
 
+int NbCommandeMax = INT_MAX;
+
 
 int main() {
     // Création d'un fichier d'un seul int nommé nextFact et contenant l'int 1
@@ -30,7 +32,7 @@ void lireLesCommandes() //cette fonction ouvre tous les fichiers commandeXXX.txt
 {
     FILE * ficCommande = NULL;
     int flag = 0;
-    int NbCommande = lireProchaineCommande(); //numero de la premiere commande qui sera lue et traitee
+    int NbCommande = lireProchaineCommande(); //numéro de la premiere commande qui sera lue et traitée 
     char NbCommandeChar[5];
     char nomCommande[29];
 
@@ -47,7 +49,7 @@ void lireLesCommandes() //cette fonction ouvre tous les fichiers commandeXXX.txt
         printf("\n\tTraitement du fichier %s...",nomCommande);
 
         ficCommande = fopen(nomCommande, "rt");
-        if (ficCommande != NULL) { // le fichier commandeNNNN.txt existe
+        if (ficCommande != NULL && NbCommande < NbCommandeMax) { // le fichier commandeNNNN.txt existe
             printf("\n\tLe fichier %s est présent !\n\tLecture...", nomCommande);
             lireCommande(nomCommande, NbCommandeChar); // à vous de coder cette fonction lors de ce TP9
             fclose(ficCommande);
@@ -88,6 +90,7 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
 
     char line[CLIENT_SIZE];
     commande.tailleProduit = 0;
+    int alertFlag = 0;
 
     // Création de la liste des produits.
     T_TableauDeProduits tabProd;
@@ -117,6 +120,7 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
                     total += (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit];
                 } else {
                     alert(tabProd[i].reference);
+                    alertFlag = 1;
                 }
             }
         }
@@ -128,6 +132,10 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
 
 	fclose(fileCommande);
     fclose(fileFacture);
+
+    if(alertFlag == 1) {
+        createNewCommand(nbCommande);
+    }
 
     return commande;
 }
@@ -206,5 +214,48 @@ void alert(int id) {
 
     fileAlert = fopen("alertes.txt", "a");
 
-    fprintf(fileAlert, " %d ", id);
+    fprintf(fileAlert, "%d\n", id);
+}
+
+
+void createNewCommand(char * nbCommande) {
+    FILE * fileCheck;
+
+    int intCommande = convertStringIntoInt(nbCommande); 
+    char buffer[CHARA_MAX];
+
+    do
+    {
+        intCommande++;
+        char nomNouvelleCommande[CHARA_MAX] = "./commandes/commande";
+        strcat(nomNouvelleCommande, convertIntIntoChar(intCommande, buffer));
+        strcat(nomNouvelleCommande, ".txt");
+
+        fileCheck = fopen(nomNouvelleCommande, "rt");
+    } while (fileCheck != NULL);
+    
+    printf("%d", intCommande);
+
+    if(intCommande < NbCommandeMax) {
+        NbCommandeMax = intCommande;
+    }
+
+    char nomNouvelleCommande[CHARA_MAX] = "./commandes/commande";
+    strcat(nomNouvelleCommande, convertIntIntoChar(intCommande, buffer));
+    strcat(nomNouvelleCommande, ".txt");
+
+    // ficCommande = fopen(nomCommande, "rt");
+
+    char nomAncienneCommande[CHARA_MAX] = "./commandes/commande";
+    strcat(nomAncienneCommande, nbCommande);
+    strcat(nomAncienneCommande, ".txt");
+
+    char line[CLIENT_SIZE];
+
+    FILE * fileNew = fopen(nomNouvelleCommande, "w");
+    FILE * fileOld = fopen(nomAncienneCommande, "r");
+
+    while(fgets(line, CLIENT_SIZE, fileOld) != NULL) {
+        fprintf(fileNew, "%s", line);
+    }
 }

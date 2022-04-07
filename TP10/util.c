@@ -5,7 +5,7 @@
 
 // Convertit la chaine int N en une chaîne de caractères N4.
 //		Ex : N=1234  =>  N4="1234".
-void convertIntIntoChar(int N, char * N4) {
+char *convertIntIntoChar(int N, char * N4) {
     int m, c, d, u;
     char cm, cc, cd, cu;
     m = N / 1000;
@@ -23,6 +23,8 @@ void convertIntIntoChar(int N, char * N4) {
     N4[2] = cd;
     N4[3] = cu;
     N4[4] = '\0';
+
+    return N4;
 }
 
 // Convertit un string contenant des chiffres en Integer

@@ -25,6 +25,7 @@ void convertIntIntoChar(int N, char * N4) {
     N4[4] = '\0';
 }
 
+// Convertit un string contenant des chiffres en Integer
 int convertStringIntoInt(char * c) {
     int taille = strlen(c);
     int n = 0; // Converted int.
@@ -36,10 +37,12 @@ int convertStringIntoInt(char * c) {
     return n;
 }
 
-double convertPriceStringToInt(char * c) {
+// Convertit un prix en chaîne de caractères (ex: 3.50) en Double
+double convertPriceStringIntoDouble(char * c) {
     int taille = strlen(c)-1;
     double price = 0;
 
+    // Gère les chiffres après la virgule
     price += (c[taille]-'0') * pow(10,-2);
     taille--;
     price += (c[taille]-'0') * pow(10,-1);

@@ -1,9 +1,9 @@
 Client: DURAND
-25 feutre (P.U. = 1.20eur) :: 45.00eur
-15 regle (P.U. = 1.20eur) :: 34.50eur
-50 agrafeuse (P.U. = 1.20eur) :: 280.00eur
-25 ramette_feuillesA4 (P.U. = 1.20eur) :: 247.50eur
-30 boite_100enveloppes11*21 (P.U. = 1.20eur) :: 261.00eur
-15 boite_100enveloppes30*21 (P.U. = 1.20eur) :: 220.50eur
+25 feutre (P.U. = 1.80eur) :: 45.00eur
+15 regle (P.U. = 2.30eur) :: 34.50eur
+50 agrafeuse (P.U. = 5.60eur) :: 280.00eur
+25 ramette_feuillesA4 (P.U. = 9.90eur) :: 247.50eur
+30 boite_100enveloppes11*21 (P.U. = 8.70eur) :: 261.00eur
+15 boite_100enveloppes30*21 (P.U. = 14.70eur) :: 220.50eur
 
 Total: 1088.50eur

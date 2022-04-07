@@ -1,22 +1,29 @@
-#define TAILLE 50
-#define PROD_SIZE 100
 
-#define  NB_MAX_PRODUITS 1000
+// Nombre maximum de caractères dans un String, tel que le nom du client, le libellé du produit...
+#define CHARA_MAX 300
+// Taille maximale d'une ligne dans le fichier produits.txt
+#define PROD_SIZE 200
+// Taille maximale d'une ligne dans les fichiers commandeXXXX.txt
+#define CLIENT_SIZE 200
+
+// Nombre maximum de produits différents disponibles
+#define NB_MAX_PRODUITS 1000
 
 
 typedef struct {
     unsigned int reference; // ID (référence) du produit.
-    char libelle[TAILLE]; // Nom du produit
+    char libelle[CHARA_MAX]; // Nom du produit
     float prixUnitaire; // Prix unitaire du produit
 } T_Produit;
 
 typedef struct {
-    char client[50]; // Nom du client
-    unsigned int idProduit[PROD_SIZE]; // ID (Référence) du produit.
-    int nbProduit[PROD_SIZE]; // Nombre d'achats sur un produit
+    char client[CHARA_MAX]; // Nom du client
+    unsigned int idProduit[NB_MAX_PRODUITS]; // ID (Référence) du produit.
+    int nbProduit[NB_MAX_PRODUITS]; // Nombre d'achats sur un produit
     int tailleProduit; // Nombre de produits différents dans le tableau.
 } T_Commande;
 
+// Tableau contenant tout les T_Produits différents
 typedef T_Produit T_TableauDeProduits[NB_MAX_PRODUITS];
 
 // Permet de donner l'int de la prochaine commande.

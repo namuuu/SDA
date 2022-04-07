@@ -14,14 +14,14 @@ int main() {
     // code à utiliser pour réinitialiser nextFact à 1 si besoin au cours du TP 
 
     
-    FILE *fileFact = NULL;
+    /*FILE *fileFact = NULL;
 	int size = 1;
     fileFact = fopen("nextFact.txt","w");
     fwrite(&size, 1, sizeof(int), fileFact);
-    fclose(fileFact);
+    fclose(fileFact);*/
 
-    //PARTIE 1 du TP : sans Gestion de stock
-    lireLesCommandes(); //lecture de tous les fichiers commandeXXX.txt (fichiers non traités jusqu'ici)		
+
+    lireLesCommandes(); //lecture de tous les fichiers commandeXXX.txt
 
     return 0;
 }
@@ -33,8 +33,6 @@ void lireLesCommandes() //cette fonction ouvre tous les fichiers commandeXXX.txt
     int NbCommande = lireProchaineCommande(); //numero de la premiere commande qui sera lue et traitee
     char NbCommandeChar[5];
     char nomCommande[29];
-
-    remove("alertes.txt");
 
     do // Ce do while prend fin dès que fichier commandeXXXX.txt est absent 
     {
@@ -82,13 +80,13 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
     T_Commande commande;
 	fileCommande = fopen(nomCommande, "r");
 
-    char factureName[29] = "./factures/facture";
+    char factureName[CHAR_MAX] = "./factures/facture";
     strcat(factureName, nbCommande);
     strcat(factureName, ".txt");
 
     FILE * fileFacture = fopen(factureName, "w");
 
-    char line[50];
+    char line[CLIENT_SIZE];
     commande.tailleProduit = 0;
 
     // Création de la liste des produits.
@@ -97,14 +95,14 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
     lireProduits(tabProd, &tabsize);
 
     // Enregistre le nom du client dans commande.client.
-    fgets(line, 50, fileCommande);
+    fgets(line, CLIENT_SIZE, fileCommande);
     strcpy(commande.client, line);
 
     //printf("\n\nClient: %s", commande.client);
     fprintf(fileFacture, "Client: %s", commande.client);
     float total = 0;
 
-    while(fgets(line, 50, fileCommande) != NULL) {
+    while(fgets(line, CLIENT_SIZE, fileCommande) != NULL) {
         char * strToken = strtok(line, " \n");
         commande.idProduit[commande.tailleProduit] = convertStringIntoInt(strToken);
         strToken = strtok(NULL, " \n");
@@ -115,7 +113,7 @@ T_Commande lireCommande(char * nomCommande, char * nbCommande) {
                 //printf("%d %s (P.U. = %.2feur) :: %.2feur\n", commande.nbProduit[commande.tailleProduit], tabProd[i].libelle, tabProd->prixUnitaire, (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit]);
 
                 if(enleverStock(tabProd[i].reference, commande.nbProduit[commande.tailleProduit])) {
-                    fprintf(fileFacture, "%d %s (P.U. = %.2feur) :: %.2feur\n", commande.nbProduit[commande.tailleProduit], tabProd[i].libelle, tabProd->prixUnitaire, (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit]);
+                    fprintf(fileFacture, "%d %s (P.U. = %.2feur) :: %.2feur\n", commande.nbProduit[commande.tailleProduit], tabProd[i].libelle, (tabProd[i].prixUnitaire), (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit]);
                     total += (tabProd[i].prixUnitaire)*commande.nbProduit[commande.tailleProduit];
                 } else {
                     alert(tabProd[i].reference);
@@ -147,25 +145,26 @@ void lireProduits(T_TableauDeProduits tabProd, int *tabSize) {
 		strToken = strtok(NULL, " \n");
 		strcpy(produit.libelle, strToken);
 		strToken = strtok(NULL, " \n");
-		produit.prixUnitaire = convertPriceStringToInt(strToken);
+		produit.prixUnitaire = convertPriceStringIntoDouble(strToken);
 
         tabProd[*tabSize] = produit;
         *tabSize = *tabSize + 1;
 	}
 }
 
+// Permet d'enlever le stock d'un produit id de quantité nb.
 int enleverStock(int id, int nb) {
     FILE * fileStockRead;
     FILE * fileStockWrite;
 
     int flag = 0;
 
-    char line[TAILLE];
+    char line[CHAR_MAX];
 
     fileStockRead = fopen("stock.txt", "r");
     fileStockWrite = fopen("stock.tmp", "w");
 
-    while((fgets(line, TAILLE, fileStockRead)) != NULL) {
+    while((fgets(line, CHAR_MAX, fileStockRead)) != NULL) {
         char * strToken = strtok(line, " \n");
         int idRead = convertStringIntoInt(strToken);
 
@@ -193,6 +192,7 @@ int enleverStock(int id, int nb) {
     return flag;
 }
 
+// Permet de créer un fichier alertes.txt contenant tous les produits ayant un manque de stock comparé à la commande voulue.
 void alert(int id) {
     FILE * fileAlert;
 

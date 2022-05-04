@@ -116,7 +116,7 @@ int main(void) {
 
     path_t p = solve_maze(maze); 
 
-    printf("\n%s", p);
+    printf("\n%s\n", p);
 
     check_path(maze, &p);
 
@@ -535,6 +535,8 @@ path_t solve_maze(maze_t * m) {
         }
     }
 
+    p[path] = '\0';
+
     return p;
 }
 
@@ -547,11 +549,19 @@ bool check_path(maze_t * m, path_t * p) {
     int row = m->row;
     int col = m->col;
 
-    char path = 0;
+    int path = 0;
 
-    char tab[m->row][m->col];
+    char tab[row][col];
+
+    for (int iniRow = 0; iniRow < row; ++iniRow) {
+        for (int iniCol = 0; iniCol < col; ++iniCol) {
+            tab[iniRow][iniCol] = 0;
+        }
+    }
+
 
     while((*p)[path] != '\0') {
+
         switch ((*p)[path])
         {
         case 'u':
@@ -574,17 +584,23 @@ bool check_path(maze_t * m, path_t * p) {
             break;
         }
         path++;
-    }
-
-    printf("\n\n%d : %d \n", currRow, currCol);
+    }   
 
     if(currRow == row && currCol == col)
         flag = true;
-
+    for (int iniRow = 0; iniRow < row; ++iniRow) {
+        printf("__");
+    }
+    printf("\n");
     for (int iniRow = 0; iniRow < row; ++iniRow) {
         for (int iniCol = 0; iniCol < col; ++iniCol) {
             if(iniCol == 0)
                 printf("|");
+
+            if(iniCol == col-1 && iniRow == row-1) {
+                printf("v|");
+                continue;
+            }
 
             switch (tab[iniRow][iniCol])
             {
@@ -601,16 +617,27 @@ bool check_path(maze_t * m, path_t * p) {
                 printf("d");
                 break;
             default:
-                printf("_");
+                if(*wall_under(m, iniRow, iniCol) || iniRow == row-1) {
+                    printf("_");
+                } else {
+                    printf(" ");
+                }
+                
                 break;
             }
-            printf("|");
-
-            if(iniCol == col)
+            if(*wall_right(m, iniRow, iniCol) || iniCol == col-1) {
                 printf("|");
+            } else {
+                if(iniRow == row-1) {
+                    printf("_");
+                } else {
+                    printf(" ");
+                }
+            }
         }
         printf("\n");
     }
+    printf("\n");
 
     return flag;
 }

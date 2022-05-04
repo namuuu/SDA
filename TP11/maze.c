@@ -346,10 +346,12 @@ maze_t * random_maze(int row, int col) {
 
         // Enlève le mur
         if(wall == 1) {
-            m->wallh[(randRow)*(col) + randCol] = 0;
+            // m->wallh[(randRow)*(col) + randCol] = 0;
+            *wall_under(m, randRow, randCol) = 0;
             //printf("Mur enlevé : %d.", (randRow)*col + randCol);
         } else {
-            m->wallv[(randRow)*(col-1) + randCol] = 0;
+            *wall_right(m, randRow, randCol) = 0;
+            // m->wallv[(randRow)*(col-1) + randCol] = 0;
             //printf("Mur enlevé : %d.", (randRow)*(col-1) + randCol);
         }
        
